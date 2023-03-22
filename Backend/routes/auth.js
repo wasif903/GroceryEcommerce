@@ -1,33 +1,25 @@
 const router = require('express').Router();
 const User = require('../models/auth');
+const bcrypt = require('bcrypt');
 
 router.post('/register', async (req, res) => {
-    try {
-        const { username, email, password, confirmPass } = req.body;
 
-        const newUser = await new User({
+    try {
+        const { username, email, password } = req.body;
+
+        const securedPass = await bcrypt.hash(password, 10);
+
+        const newUser = new User({
             username,
             email,
-            password,
-            confirmPass
+            password: securedPass,
         });
 
-        if (password === confirmPass) {
-
-            const saveUser = await newUser.save();
-
-            res.status(200).json(saveUser);
-
-        } else {
-
-            res.status(400).json("Password Doesn't Match Eachother");
-        
-        }
+        const saveUser = await newUser.save();
+        res.status(200).json(saveUser);
 
     } catch (error) {
-
         res.status(500).json(error);
-
     }
 });
 
