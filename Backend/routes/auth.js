@@ -23,4 +23,25 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.post('/login', async (req, res) => {
+
+    try {
+
+        const { email } = req.body;
+
+        const login = User.find({ email });
+
+        if (login) {
+            res.status(200).json("Logged In");    
+        } else {
+            res.status(400).json("Bad");    
+
+        }
+
+
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
 module.exports = router;
