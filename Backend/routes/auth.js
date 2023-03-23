@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const User = require('../models/auth');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.post('/register', async (req, res) => {
 
@@ -23,24 +24,32 @@ router.post('/register', async (req, res) => {
     }
 });
 
+
 router.post('/login', async (req, res) => {
-
     try {
+        const { email, password } = req.body;
 
-        const { email } = req.body;
+        const user = await User.findOne({ email });
 
-        const login = User.find({ email });
+        if (!user) {
+            return res.status(400).json({ error: 'User not found' });
+        } 
+        
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-        if (login) {
-            res.status(200).json("Logged In");    
+
+        const token = jwt.sign({id:user._id}, process.env.JWT_SECRET_KEY);
+
+        
+        if (!isPasswordMatch) {
+            return res.status(400).json({ error: 'Wrong password' });
         } else {
-            res.status(400).json("Bad");    
-
+            res.status(200).json({ message: 'Logged In', token });
         }
 
-
     } catch (error) {
-        res.status(500).json(error);
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
