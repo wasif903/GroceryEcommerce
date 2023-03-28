@@ -1,23 +1,27 @@
 const router = require('express').Router();
-const User = require('../models/auth');
+const Shop = require('../models/ShopAuth');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-router.post('/register', async (req, res) => {
+router.post('/register-shop', async (req, res) => {
 
     try {
-        const { username, email, password } = req.body;
+        const { name, email, password, address, phone, confirmPass, roles } = req.body;
 
         const securedPass = await bcrypt.hash(password, 10);
 
-        const newUser = new User({
-            username,
+        const newShop = new Shop({
+            name,
             email,
+            phone,
+            roles,
+            address,
             password: securedPass,
+            confirmPass
         });
 
-        const saveUser = await newUser.save();
-        res.status(200).json(saveUser);
+        const saveShop = await newShop.save();
+        res.status(200).json(saveShop);
 
     } catch (error) {
         res.status(500).json(error);
@@ -25,7 +29,7 @@ router.post('/register', async (req, res) => {
 });
 
 
-router.post('/login', async (req, res) => {
+router.post('/login-shop', async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -33,14 +37,14 @@ router.post('/login', async (req, res) => {
 
         if (!user) {
             return res.status(400).json({ error: 'User not found' });
-        } 
-        
+        }
+
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
 
-        const token = jwt.sign({id:user._id}, process.env.JWT_SECRET_KEY);
+        const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET_KEY);
 
-        
+
         if (!isPasswordMatch) {
             return res.status(400).json({ error: 'Wrong password' });
         } else {
