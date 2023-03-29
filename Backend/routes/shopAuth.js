@@ -31,18 +31,18 @@ router.post('/register-shop', async (req, res) => {
 
 router.post('/login-shop', async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, roles } = req.body;
 
-        const user = await User.findOne({ email });
+        const shop = await Shop.findOne({ email });
 
-        if (!user) {
+        if (!shop) {
             return res.status(400).json({ error: 'User not found' });
         }
 
-        const isPasswordMatch = await bcrypt.compare(password, user.password);
+        const isPasswordMatch = await bcrypt.compare(password, shop.password);
 
 
-        const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET_KEY);
+        const token = jwt.sign({ id: shop._id, email: shop.email, roles: shop.roles }, process.env.JWT_SECRET_KEY);
 
 
         if (!isPasswordMatch) {
