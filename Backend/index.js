@@ -4,7 +4,7 @@ const app = express();
 const dotenv = require('dotenv');
 const authRoute = require('./routes/userAuth');
 const shopAuthRoute = require('./routes/shopAuth')
-const ShopAuthMiddleware = require('./middlewares/ShopAuthMiddleware');
+const ShopAdminAuth = require('./middlewares/ShopAdminAuth');
 
 require('dotenv').config();
 
@@ -14,7 +14,7 @@ app.use('/auth', authRoute);
 app.use('/shop', shopAuthRoute);
 
 
-app.get('/hello', ShopAuthMiddleware, (req, res) => {
+app.get('/hello', ShopAdminAuth, (req, res) => {
     res.send("Authorization Done");
 })
 

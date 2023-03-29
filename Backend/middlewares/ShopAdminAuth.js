@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const ShopAuthMiddleware = (req, res, next) => {
+const ShopAdminAuth = (req, res, next) => {
     try {
         const token = req.headers.authorization;
 
@@ -24,4 +24,4 @@ const ShopAuthMiddleware = (req, res, next) => {
     }
 };
 
-module.exports = ShopAuthMiddleware;
+module.exports = ShopAdminAuth;
