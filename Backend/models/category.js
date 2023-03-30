@@ -5,7 +5,8 @@ const CategorySchame = new Schema({
 
     category: {
         type: String,
-        default: "uncategorized"
+        default: "uncategorized",
+        unique:true
     },
 
 });
