@@ -1,12 +1,13 @@
 const subCategory = require('../models/subCategory');
 const Category = require('../models/category');
 const router = require('express').Router();
-const AdminAuthMiddleware = require('../middlewares/ShopAdminAuth');
+const ShopAdminAuth = require('../middlewares/ShopAdminAuth');
 const ShopManagerAuth = require('../middlewares/ShopManagerAuth');
-const ShopEmployeeAuth = require('../middlewares/ShopEmployeeAuth')
+const ShopEmployeeAuth = require('../middlewares/ShopEmployeeAuth');
+const SubCategory = require('../models/subCategory');
 
 
-router.post('/create-subcategory', [AdminAuthMiddleware, ShopManagerAuth, ShopEmployeeAuth], async (req, res) => {
+router.post('/create-subcategory', [ShopAdminAuth], async (req, res) => {
 
     try {
 
@@ -28,6 +29,24 @@ router.post('/create-subcategory', [AdminAuthMiddleware, ShopManagerAuth, ShopEm
     } catch (error) {
         res.status(500).json("Internal Server Error");
         console.log(error)
+    }
+
+})
+
+
+router.delete('/delete-subcategory/:id', [ShopAdminAuth], async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+        const findSubCat = await SubCategory.findByIdAndDelete(id);
+        res.status(200).json(findSubCat);
+
+    } catch (error) {
+
+        res.status(200).json(error);
+        console.log(error);
+
     }
 
 })
