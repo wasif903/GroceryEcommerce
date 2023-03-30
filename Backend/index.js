@@ -9,6 +9,8 @@ const ShopAdminAuth = require('./middlewares/ShopAdminAuth');
 const ShopManagerAuth = require('./middlewares/ShopManagerAuth');
 const ShopEmployeeAuth = require('./middlewares/ShopEmployeeAuth')
 const SuperAdminAuth = require('./middlewares/SuperAdminAuth')
+const categoryRoute = require('./routes/categoryCRUD');
+const subcategoryRoute = require('./routes/subCategoryCRUD');
 
 
 require('dotenv').config();
@@ -18,6 +20,8 @@ app.use(express.json());
 app.use('/auth', authRoute);
 app.use('/shop', shopAuthRoute);
 app.use('/superAdmin', SuperAdminRoutes);
+app.use('/category', categoryRoute);
+app.use('/subcategory', subcategoryRoute);
 
 
 app.get('/hello', ShopAdminAuth, (req, res) => {

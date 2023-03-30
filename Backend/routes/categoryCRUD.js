@@ -1,0 +1,23 @@
+const Category = require('../models/category');
+const router = require('express').Router();
+const AdminAuthMiddleware = require('../middlewares/ShopAdminAuth');
+
+
+router.post('/create-category', AdminAuthMiddleware , async (req, res) => {
+
+    try {
+        
+        const createCategory = await new Category(req.body);
+
+        const saveCategory = await createCategory.save();
+
+        res.status(201).json(saveCategory);
+
+    } catch (error) {
+        res.status(500).json("Internal Server Error");        
+    }
+
+})
+
+
+module.exports = router;
