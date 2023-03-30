@@ -5,6 +5,10 @@ const dotenv = require('dotenv');
 const authRoute = require('./routes/userAuth');
 const shopAuthRoute = require('./routes/shopAuth')
 const ShopAdminAuth = require('./middlewares/ShopAdminAuth');
+const ShopManagerAuth = require('./middlewares/ShopManagerAuth');
+const ShopEmployeeAuth = require('./middlewares/ShopEmployeeAuth')
+const SuperAdminAuth = require('./middlewares/SuperAdminAuth')
+
 
 require('dotenv').config();
 
@@ -15,7 +19,16 @@ app.use('/shop', shopAuthRoute);
 
 
 app.get('/hello', ShopAdminAuth, (req, res) => {
-    res.send("Authorization Done");
+    res.send("Admin Route");
+})
+app.get('/hello2', ShopManagerAuth, (req, res) => {
+    res.send("Manager Route");
+})
+app.get('/hello3', ShopEmployeeAuth, (req, res) => {
+    res.send("Employee Route");
+})
+app.get('/hello4', SuperAdminAuth, (req, res) => {
+    res.send("Super Admin Route");
 })
 
 
