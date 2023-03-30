@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const Shop = require('../models/ShopAuth');
+const Shop = require('../../models/AuthModels/ShopAuth');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
