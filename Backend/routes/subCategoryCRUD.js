@@ -2,13 +2,15 @@ const subCategory = require('../models/subCategory');
 const Category = require('../models/category');
 const router = require('express').Router();
 const AdminAuthMiddleware = require('../middlewares/ShopAdminAuth');
+const ShopManagerAuth = require('../middlewares/ShopManagerAuth');
+const ShopEmployeeAuth = require('../middlewares/ShopEmployeeAuth')
 
 
-router.post('/create-subcategory', AdminAuthMiddleware, async (req, res) => {
+router.post('/create-subcategory', [AdminAuthMiddleware, ShopManagerAuth, ShopEmployeeAuth], async (req, res) => {
 
     try {
 
-        const findCategory = await Category.findOne({category:req.body.category});
+        const findCategory = await Category.findOne({ category: req.body.category });
 
         if (!findCategory) {
             res.status(404).json("Category Not Found");
