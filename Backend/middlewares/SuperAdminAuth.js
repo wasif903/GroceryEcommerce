@@ -10,7 +10,7 @@ const SuperAdminAuth = (req, res, next) => {
 
         const decodedToken = jwt.verify(token.split(" ")[1], process.env.JWT_SECRET_KEY);
 
-        if (!decodedToken.roles.includes('Super Admin')) {
+        if (!decodedToken.role.includes('Super Admin')) {
             return res.status(403).json("Forbidden");
         }
 
