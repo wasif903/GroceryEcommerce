@@ -6,13 +6,14 @@ const jwt = require('jsonwebtoken');
 router.post('/register', async (req, res) => {
 
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, roles } = req.body;
 
         const securedPass = await bcrypt.hash(password, 10);
 
         const newUser = new User({
             username,
             email,
+            roles,
             password: securedPass,
         });
 
@@ -38,7 +39,7 @@ router.post('/login', async (req, res) => {
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
 
-        const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET_KEY);
+        const token = jwt.sign({ id: user._id, email: user.email, roles: user.roles }, process.env.JWT_SECRET_KEY);
 
 
         if (!isPasswordMatch) {

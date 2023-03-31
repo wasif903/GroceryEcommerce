@@ -1,13 +1,12 @@
 const subCategory = require('../models/subCategory');
 const Category = require('../models/category');
 const router = require('express').Router();
-const ShopAdminAuth = require('../middlewares/ShopAdminAuth');
-const ShopManagerAuth = require('../middlewares/ShopManagerAuth');
-const ShopEmployeeAuth = require('../middlewares/ShopEmployeeAuth');
+// const ShopAdminAuth = require('../middlewares/ShopAdminAuth');
+const authMiddleware = require('../middlewares/authMiddleware');
 const SubCategory = require('../models/subCategory');
 
 
-router.post('/create-subcategory', [ShopAdminAuth], async (req, res) => {
+router.post('/create-subcategory', authMiddleware(['Manager', 'Employee']), async (req, res) => {
 
     try {
 
@@ -34,7 +33,7 @@ router.post('/create-subcategory', [ShopAdminAuth], async (req, res) => {
 })
 
 
-router.delete('/delete-subcategory/:id', [ShopAdminAuth], async (req, res) => {
+router.delete('/delete-subcategory/:id', authMiddleware(['Manager', 'Admin']), async (req, res) => {
 
     try {
 

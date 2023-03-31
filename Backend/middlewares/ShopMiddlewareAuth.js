@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const ShopEmployeeAuth = (req, res, next) => {
+const ShopMiddlewareAuth = (req, res, next) => {
     try {
         const token = req.headers.authorization;
 
@@ -10,7 +10,7 @@ const ShopEmployeeAuth = (req, res, next) => {
 
         const decodedToken = jwt.verify(token.split(" ")[1], process.env.JWT_SECRET_KEY);
 
-        if (!decodedToken.roles.includes('Employee')) {
+        if (!decodedToken.roles.includes(decodedToken.roles)) {
             return res.status(403).json("Forbidden");
         }
 
@@ -24,4 +24,4 @@ const ShopEmployeeAuth = (req, res, next) => {
     }
 };
 
-module.exports = ShopEmployeeAuth;
+module.exports = ShopMiddlewareAuth;

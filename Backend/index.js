@@ -5,9 +5,8 @@ const dotenv = require('dotenv');
 const authRoute = require('./routes/AuthRoutes/userAuth');
 const shopAuthRoute = require('./routes/AuthRoutes/shopAuth')
 const SuperAdminRoutes = require('./routes/AuthRoutes/SuperAdmin')
-const ShopAdminAuth = require('./middlewares/ShopAdminAuth');
-const ShopManagerAuth = require('./middlewares/ShopManagerAuth');
-const ShopEmployeeAuth = require('./middlewares/ShopEmployeeAuth')
+const authMiddleware = require('./middlewares/authMiddleware');
+const ShopManagerAuth = require('./middlewares/ShopMiddlewareAuth');
 const SuperAdminAuth = require('./middlewares/SuperAdminAuth')
 const categoryRoute = require('./routes/categoryCRUD');
 const subcategoryRoute = require('./routes/subCategoryCRUD');
@@ -24,15 +23,13 @@ app.use('/category', categoryRoute);
 app.use('/subcategory', subcategoryRoute);
 
 
-app.get('/hello', ShopAdminAuth, (req, res) => {
+app.get('/hello', authMiddleware, (req, res) => {
     res.send("Admin Route");
 })
 app.get('/hello2', ShopManagerAuth, (req, res) => {
     res.send("Manager Route");
 })
-app.get('/hello3', ShopEmployeeAuth, (req, res) => {
-    res.send("Employee Route");
-})
+
 app.get('/hello4', SuperAdminAuth, (req, res) => {
     res.send("Super Admin Route");
 })

@@ -36,7 +36,7 @@ const ShopSchema = new Schema({
 
     roles: {
         type: [String],
-        enum: ['Admin', 'Manager', 'Employee'],
+        enum: ['Admin'],
         default: ["Admin"],
         require: true
     }
