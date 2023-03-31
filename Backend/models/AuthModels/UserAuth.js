@@ -5,7 +5,8 @@ const UserSchema = new Schema({
   
   username: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
 
   storeName: {
@@ -27,10 +28,10 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  
+
   roles: {
     type: [String],
-    enum: ['Admin', 'Customer', 'Manager', 'Employee'],
+    enum: ['Admin', 'Customer', 'Manager', 'Employee', 'Super Admin'],
     default: ["Customer"],
     required: true
   }
