@@ -19,15 +19,20 @@ const UserSchema = new Schema({
         require: true
     },
 
-    category:{
+    User: {
+        userId:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    },
+
+    category: {
         categoryID: mongoose.Schema.Types.ObjectId,
-        ref:"category"
-    }, 
-    
-    subCategory:{
+        ref: "category"
+    },
+
+    subCategory: {
         categoryID: mongoose.Schema.Types.ObjectId,
-        ref:"subCategory"
-    }, 
+        ref: "subCategory"
+    },
 
 });
 
