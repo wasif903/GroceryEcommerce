@@ -33,6 +33,37 @@ router.post('/create-subcategory', authMiddleware(['Manager', 'Employee']), asyn
 })
 
 
+
+router.patch('/update-subcategory/:id', authMiddleware(['Manager', 'Employee']), async (req, res) => {
+
+    try {
+
+        const findCategory = await Category.findOne({ category: req.body.category });
+
+        if (!findCategory) {
+            res.status(404).json("Category Not Found");
+        }
+
+        const { id } = req.params
+
+        const createSubCategory = await subCategory.findById(id);
+        createSubCategory.subCategory = req.body.subCategory || createSubCategory.subCategory
+
+        createSubCategory.category = findCategory._id || createSubCategory.category
+
+        const saveSubCategory = await createSubCategory.save();
+
+        res.status(201).json(saveSubCategory);
+
+    } catch (error) {
+        res.status(500).json("Internal Server Error");
+        console.log(error)
+    }
+
+})
+
+
+
 router.delete('/delete-subcategory/:id', authMiddleware(['Manager', 'Admin']), async (req, res) => {
 
     try {
