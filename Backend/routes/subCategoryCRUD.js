@@ -1,7 +1,6 @@
 const subCategory = require('../models/subCategory');
 const Category = require('../models/category');
 const router = require('express').Router();
-// const ShopAdminAuth = require('../middlewares/ShopAdminAuth');
 const authMiddleware = require('../middlewares/authMiddleware');
 const SubCategory = require('../models/subCategory');
 

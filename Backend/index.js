@@ -6,6 +6,7 @@ const authRoute = require('./routes/AuthRoutes/userAuth');
 const authMiddleware = require('./middlewares/authMiddleware');
 const categoryRoute = require('./routes/categoryCRUD');
 const subcategoryRoute = require('./routes/subCategoryCRUD');
+const storeRoute = require('./routes/AuthRoutes/storeAuth');
 
 
 require('dotenv').config();
@@ -13,6 +14,7 @@ require('dotenv').config();
 app.use(express.json());
 
 app.use('/auth', authRoute);
+app.use('/store',storeRoute);
 app.use('/category', categoryRoute);
 app.use('/subcategory', subcategoryRoute);
 
