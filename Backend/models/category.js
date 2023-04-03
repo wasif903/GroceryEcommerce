@@ -8,6 +8,11 @@ const CategorySchame = new Schema({
         default: "uncategorized",
         unique:true
     },
+    
+    store: {
+        storeID:mongoose.Schema.Types.ObjectId,
+        ref:"Store"
+    },
 
 });
 

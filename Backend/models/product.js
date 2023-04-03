@@ -19,9 +19,9 @@ const UserSchema = new Schema({
         require: true
     },
 
-    User: {
-        userId:mongoose.Schema.Types.ObjectId,
-        ref:"User"
+    store: {
+        storeID:mongoose.Schema.Types.ObjectId,
+        ref:"Store"
     },
 
     category: {
