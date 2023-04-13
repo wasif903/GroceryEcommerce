@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 const authMiddleware = (allowedRoles) => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     try {
       const token = req.headers.authorization;
 

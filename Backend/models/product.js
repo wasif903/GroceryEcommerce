@@ -11,7 +11,7 @@ const ProductSchema = new Schema({
     shortDesc: {
         type: String,
         require: true,
-        unique: true
+        unique: false
     },
 
     longDesc: {

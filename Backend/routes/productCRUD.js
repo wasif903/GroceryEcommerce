@@ -3,8 +3,9 @@ const Category = require('../models/category');
 const Product = require('../models/product');
 const SubCategory = require('../models/subCategory');
 const Store = require('../models/AuthModels/StoreAuth');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-router.post('/create-product/:storeID', async (req, res) => {
+router.post('/create-product/:storeID', authMiddleware(['Admin', 'Manager', 'Employee']), async (req, res) => {
 
     try {
         const { storeID } = req.params;
@@ -27,8 +28,8 @@ router.post('/create-product/:storeID', async (req, res) => {
                 shortDesc: req.body.shortDesc,
                 longDesc: req.body.longDesc,
                 storeID: storeID,
-                categoryID: findCategory.category,
-                subCategoryID: findSubCategory.subCategory,
+                categoryID: findCategory._id,
+                subCategoryID: findSubCategory._id,
             });
 
             const saveProduct = await product.save();
@@ -36,7 +37,7 @@ router.post('/create-product/:storeID', async (req, res) => {
         }
 
     } catch (error) {
-
+        console.log(error)
         res.status(500).json({ message: "Error Creating Product", error })
 
     }
