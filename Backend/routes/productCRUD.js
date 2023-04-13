@@ -8,8 +8,8 @@ router.post('/create-product/:storeID', async (req, res) => {
 
     try {
         const { storeID } = req.params;
-        const findCategory = await Category.findOne({ category: req.body.category });
-        const findSubCategory = await SubCategory.findOne({ subCategory: req.body.subCategory });
+        const findCategory = await Category.findOne({ categoryID: req.body.category });
+        const findSubCategory = await SubCategory.findOne({ subCategoryID: req.body.subCategory });
         const store = Store.findById(storeID);
 
         if (!findCategory) {
@@ -27,8 +27,8 @@ router.post('/create-product/:storeID', async (req, res) => {
                 shortDesc: req.body.shortDesc,
                 longDesc: req.body.longDesc,
                 storeID: storeID,
-                categoryID: findCategory._id,
-                subCategoryID: findSubCategory._id,
+                categoryID: findCategory.category,
+                subCategoryID: findSubCategory.subCategory,
             });
 
             const saveProduct = await product.save();
