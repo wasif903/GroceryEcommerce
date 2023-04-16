@@ -16,20 +16,37 @@ router.post('/create-category', authMiddleware(['Admin', 'Manager', 'Employee'])
 
 
 router.patch('/update-category/:id', authMiddleware(['Admin', 'Manager', 'Employee']), async (req, res) => {
-  
+
   try {
-    
+
     const { id } = req.params;
     const getCat = await Category.findById(id);
-    
+
     getCat.category = req.body.category || getCat.category
 
     const updatedCat = await getCat.save();
-    
+
     res.status(200).json(updatedCat);
-    
+
   } catch (error) {
-    
+
+    res.status(500).json("Interval Server Error");
+  }
+
+})
+
+
+router.delete('/delete-category/:id', authMiddleware(['Admin', 'Manager', 'Employee']), async (req, res) => {
+
+  try {
+
+    const { id } = req.params;
+    const getCat = await Category.findByIdAndDelete(id);
+
+    res.status(200).json(getCat);
+
+  } catch (error) {
+
     res.status(500).json("Interval Server Error");
   }
 
