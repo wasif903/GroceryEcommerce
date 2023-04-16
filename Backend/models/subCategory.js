@@ -5,7 +5,7 @@ const SubCategorySchema = new Schema({
 
     subCategory: {
         type: String,
-        unique:true
+       
     },
 
     category: {

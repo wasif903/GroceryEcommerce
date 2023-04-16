@@ -2,15 +2,11 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
-  
+
   username: {
     type: String,
     required: true,
     unique: true
-  },
-
-  storeName: {
-    type: String
   },
 
   email: {
@@ -30,9 +26,8 @@ const UserSchema = new Schema({
   },
 
   roles: {
-    type: [String],
-    enum: ['Admin', 'Customer', 'Manager', 'Employee', 'Super Admin'],
-    default: ["Customer"],
+    type: String,
+    default: "Customer",
     required: true
   }
 });

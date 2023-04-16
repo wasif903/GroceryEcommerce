@@ -11,7 +11,7 @@ const ProductSchema = new Schema({
     shortDesc: {
         type: String,
         require: true,
-        unique: true
+        unique: false
     },
 
     longDesc: {
@@ -19,9 +19,9 @@ const ProductSchema = new Schema({
         require: true
     },
 
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+    storeID: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Store"
     },
 
     categoryID: {
@@ -36,6 +36,4 @@ const ProductSchema = new Schema({
 
 });
 
-const User = mongoose.model('Products', ProductSchema);
-
-module.exports = User;
+module.exports =  mongoose.model('product', ProductSchema);

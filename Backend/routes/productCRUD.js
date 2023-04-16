@@ -1,53 +1,46 @@
 const router = require('express').Router();
 const Category = require('../models/category');
-const subCategory = require('../models/subCategory');
 const Product = require('../models/product');
+const SubCategory = require('../models/subCategory');
+const Store = require('../models/AuthModels/StoreAuth');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-
-router.post('/create-product', async (req, res) => {
-
+router.post('/create-product/:storeID', authMiddleware(['Admin', 'Manager', 'Employee']), async (req, res) => {
 
     try {
-
-        const findCategory =  Category.findOne({ category: req.body.categoryID });
-
-        const findSubCat =  subCategory.findOne({ category: req.body.subCategoryID });
-
+        const { storeID } = req.params;
+        const findCategory = await Category.findOne({ categoryID: req.body.category });
+        const findSubCategory = await SubCategory.findOne({ subCategoryID: req.body.subCategory });
+        const store = Store.findById(storeID);
 
         if (!findCategory) {
+            res.status(404).json({ message: "Category Not Found" });
 
-            res.status(404).json("Category Not Found");
+        } else if (!findSubCategory) {
+            res.status(404).json({ message: "Sub Category Not Found" });
 
-        } else if (!findSubCat) {
-
-            res.status(404).json("Sub Category Not Found");
-
+        } else if (!store) {
+            res.status(404).json({ message: "Store Not Found" });
         } else {
 
-            const createProduct = new Product({
+            const product = await new Product({
                 title: req.body.title,
                 shortDesc: req.body.shortDesc,
                 longDesc: req.body.longDesc,
-                userId: req.body.userId,
+                storeID: storeID,
                 categoryID: findCategory._id,
-                subCategoryID: findSubCat._id
-            })
+                subCategoryID: findSubCategory._id,
+            });
 
-            console.log('before save')
-            const saveProduct = createProduct.save();
-            console.log('after save')
-
-            res.status(200).json(saveProduct);
+            const saveProduct = await product.save();
+            res.status(200).json({ message: "Product Created", saveProduct });
         }
 
-
     } catch (error) {
-
-        res.status(200).json(error);
+        console.log(error)
+        res.status(500).json({ message: "Error Creating Product", error })
 
     }
-
 })
 
-
-module.exports = router; 
+module.exports = router;

@@ -2,10 +2,19 @@
 const Category = require('../models/category');
 const router = require('express').Router();
 const authMiddleware = require('../middlewares/authMiddleware');
+const upload = require('../utils/multerConfig');
+const path = require('path');
 
-router.post('/create-category', authMiddleware(['Admin', 'Manager', 'Employee']), async (req, res) => {
+router.post('/create-category', upload.single('image'), authMiddleware(['Admin', 'Manager', 'Employee']), async (req, res) => {
   try {
-    const createCategory = await new Category(req.body);
+
+    const catImg = req.file;
+
+    const createCategory = new Category({
+      category: req.body.category,
+      storeID: req.body.storeID,
+      categoryImage: catImg.path
+    });
     const saveCategory = await createCategory.save();
     res.status(201).json(saveCategory);
   } catch (error) {
