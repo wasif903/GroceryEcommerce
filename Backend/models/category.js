@@ -10,7 +10,8 @@ const CategorySchema = new Schema({
 
     storeID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Store"
+        ref: "Store",
+        require:true
     },
     categoryImage: {
         type: String,

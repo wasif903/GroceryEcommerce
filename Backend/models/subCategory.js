@@ -11,6 +11,16 @@ const SubCategorySchema = new Schema({
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "category"
+    },
+
+    storeID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Store"
+    },
+    
+    subCategoryImage: {
+        type:String,
+        require:true
     }
 
 });
