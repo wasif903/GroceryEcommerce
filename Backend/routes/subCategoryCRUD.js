@@ -33,7 +33,6 @@ router.post('/create-subcategory', upload.single('subCategoryImage'), authMiddle
         res.status(500).json("Internal Server Error");
         console.log(error)
     }
-
 })
 
 

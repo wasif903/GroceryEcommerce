@@ -20,8 +20,8 @@ const ProductSchema = new Schema({
     },
 
     storeID: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Store"
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Store"
     },
 
     categoryID: {
@@ -34,6 +34,16 @@ const ProductSchema = new Schema({
         ref: "subCategory"
     },
 
+    featuredImage: {
+        type: String,
+        require: true
+    },
+
+    galleryImage: {
+        type: Array,
+        require: true
+    }
+
 });
 
-module.exports =  mongoose.model('product', ProductSchema);
+module.exports = mongoose.model('product', ProductSchema);

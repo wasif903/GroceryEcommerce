@@ -2,11 +2,14 @@ const router = require('express').Router();
 const StoreAuth = require('../../models/AuthModels/StoreAuth');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const upload = require('../../utils/multerConfig');
 
-router.post('/register-store', async (req, res) => {
+router.post('/register-store', upload.single('storeImage'), async (req, res) => {
 
     try {
         const { storeName, phone, address, username, email, password, confirmPass, roles } = req.body;
+
+        const storeImage = req.file.path;
 
         const securedPass = await bcrypt.hash(password, 10);
 
@@ -18,7 +21,8 @@ router.post('/register-store', async (req, res) => {
             email,
             roles,
             password: securedPass,
-            confirmPass: securedPass
+            confirmPass: securedPass,
+            storeImage: storeImage
         });
 
         const saveStore = await newStore.save();
@@ -41,18 +45,15 @@ router.post('/login-store', async (req, res) => {
         }
 
         const isPasswordMatch = await bcrypt.compare(password, store.password);
-        // const checkConfirmPass = await bcrypt.compare(confirmPass, isPasswordMatch)
 
         const token = jwt.sign({ id: store._id, email: store.email, roles: store.roles }, process.env.JWT_SECRET_KEY);
 
 
         if (!isPasswordMatch) {
+        
             return res.status(400).json({ error: 'Wrong password' });
-        } 
-        // else if (!checkConfirmPass) {
-        //     return res.status(400).json({ error: 'passwords are not same' });
-        // } 
-        else {
+        
+        } else {
             res.status(200).json({ message: 'Logged In', token });
         }
 

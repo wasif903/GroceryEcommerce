@@ -30,6 +30,12 @@ const UserSchema = new Schema({
     enum: ['Manager', 'Employee', 'Super Admin', 'Customer'],
     default: ['Customer'],
     required: true
+  },
+  status: {
+    type: String,
+    enum: ['Blocked', 'Unblocked'],
+    default: ['Unblocked'],
+    required: true
   }
 });
 
