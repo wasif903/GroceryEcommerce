@@ -5,8 +5,7 @@ const SubCategory = require('../models/subCategory');
 const Store = require('../models/AuthModels/StoreAuth');
 const authMiddleware = require('../middlewares/authMiddleware');
 const upload = require('../utils/multerConfig');
-
-
+const User = require('../models/AuthModels/UserAuth');
 
 
 // Create a new property with an image and gallery images
@@ -18,74 +17,50 @@ router.post('/create-product', upload.fields([
         const { title, shortDesc, longDesc, price } = req.body;
         const { featured_image, gallery_images } = req.files;
 
+        const findUser = await User.findOne({ userID: req.body.email });
+        const findStore = await Store.findOne({ storeID: req.body.storeName });
+        const findCat = await Category.findOne({ category: req.body.category });
+        const findSubCat = await SubCategory.findOne({ subCategory: req.body.subCategory });
 
-        const createProperty = new Product({
+        if (!findUser) {
+           return  res.status(404).json({ mesasge: "User Not Found" });
+        }
+        if (!findStore) {
+           return  res.status(404).json({ mesasge: "Store Not Found" });
+        }
+        if (!findCat) {
+           return  res.status(404).json({ mesasge: "Category Not Found" });
+        }
+        if (!findSubCat) {
+           return  res.status(404).json({ mesasge: "Sub Category Not Found" });
+        }
+
+        const createProduct = new Product({
             title,
+            userID: findUser,
             shortDesc,
             longDesc,
             price,
+            storeID: findStore,
+            category: findCat,
+            subCategory: findSubCat,
             featured_image: featured_image[0].path,
             gallery_images: gallery_images.map(image => image.path),
         });
 
-        const saveProperty = await createProperty.save();
+        const saveProduct = await createProduct.save();
+        console.log(saveProduct)
+        res.status(200).json(saveProduct);
 
-        console.log(saveProperty)
 
-        res.status(200).json(saveProperty);
+
+
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
         console.log(error)
     }
 });
 
-// router.post('/:storeID/create-product/', upload.array([
 
-//     { name: 'featuredImage', maxCount: 1 },
-//     { name: 'galleryImage', maxCount: 5 }
-
-// ]), authMiddleware(['Admin', 'Manager', 'Employee']), async (req, res) => {
-
-//     try {
-//         const { storeID } = req.params;
-
-//         const {featuredImage, galleryImage} = req.files;
-
-//         const findCategory = await Category.findOne({ categoryID: req.body.category });
-//         const findSubCategory = await SubCategory.findOne({ subCategoryID: req.body.subCategory });
-
-//         const store = await Store.findById(storeID);
-
-//         if (!findCategory) {
-//             res.status(404).json({ message: "Category Not Found" });
-
-//         } else if (!findSubCategory) {
-//             res.status(404).json({ message: "Sub Category Not Found" });
-
-//         } else if (!store) {
-//             res.status(404).json({ message: "Store Not Found" });
-//         } else {
-
-//             const product = new Product({
-//                 title: req.body.title,
-//                 shortDesc: req.body.shortDesc,
-//                 longDesc: req.body.longDesc,
-//                 storeID: storeID,
-//                 categoryID: findCategory._id,
-//                 subCategoryID: findSubCategory._id,
-//                 featuredImage: featuredImage[0].path,
-//                 galleryImage: galleryImage.map(img => img.path)
-//             });
-
-//             const saveProduct = await product.save();
-//             res.status(200).json({ message: "Product Created", saveProduct });
-//         }
-
-//     } catch (error) {
-//         console.log(error)
-//         res.status(500).json({ message: "Error Creating Product", error })
-
-//     }
-// })
 
 module.exports = router;

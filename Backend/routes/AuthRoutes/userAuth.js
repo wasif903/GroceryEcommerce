@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 router.post('/register', async (req, res) => {
 
     try {
-        const { username, email, password, roles } = req.body;
+        const { username, email, password, roles, confirmPass } = req.body;
 
         const securedPass = await bcrypt.hash(password, 10);
 
@@ -14,6 +14,7 @@ router.post('/register', async (req, res) => {
             username,
             email,
             roles,
+            confirmPass,
             password: securedPass,
         });
 

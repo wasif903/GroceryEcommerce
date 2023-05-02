@@ -3,11 +3,6 @@ const { Schema } = mongoose;
 
 const StoreSchema = new Schema({
 
-  username: {
-    type: String,
-    required: true,
-    unique: true
-  },
 
   storeName: {
     type: String,
